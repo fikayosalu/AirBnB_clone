@@ -29,19 +29,33 @@ class HBNBCommand(cmd.Cmd):
         """Overrides the behaviour for empty lines by doing nothing."""
         pass
 
+    def val_class_name(self, class_name):
+        """Validate class name."""
+        if class_name not in valid_classes:
+            print("** class doesn't exist **")
+            return False
+        return True
+
+    def parse_args(self, args, expected_count):
+        """Parses arguments and validates count."""
+        args_list = args.split()
+        if len(args_list) < expected_count:
+            return None
+        return args_list
+
     def do_create(self, args):
         """Create an instance of Basemodel, saves it to JSON file
         and print an id.
         Usage: create <ClassName>
         """
-        if not args:
+        args_list = self.parse_args(args, 1)
+        if not args_list:
             print("** class name missing **")
             return
         # Extract the classname
-        class_name = args.split()[0]
+        class_name = args_list[0]
 
-        if class_name not in valid_classes:
-            print("** class doesn't exist **")
+        if not self.val_class_name(class_name):
             return
 
         # Create an instance of the class
@@ -64,8 +78,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args_list[0]
-        if class_name not in valid_classes:
-            print("** class doesn't exist **")
+        if not self.val_class_name(class_name):
             return
 
         # Check if id is missing
