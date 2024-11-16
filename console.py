@@ -151,6 +151,60 @@ class HBNBCommand(cmd.Cmd):
         ]
         print(filtered_objs)
 
+    def do_update(self, args):
+        """Updates an instance based on the class name and id by adding
+        or updating an attribute.
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """
+        args_list = args.split()
+
+        # Check for class name
+        if len(args_list) < 1:
+            print("** class name missing **")
+            return
+        class_name = args_list[0]
+        if not self.val_class_name(class_name):
+            return
+
+        # Check for instance id
+        if len(args_list) < 2:
+            print("** instance id missing **")
+            return
+        instance_id = args_list[1]
+        key = f"{class_name}.{instance_id}"
+        all_obj = models.storage.all()
+        if key not in all_obj:
+            print("** no instance found **")
+            return
+
+        # Check for attribute name
+        if len(args_list) < 3:
+            print("** attribute name missing **")
+            return
+        attribute_name = args_list[2]
+
+        # Check for attribute value
+        if len(args_list) < 4:
+            print("** value missing **")
+            return
+        attribute_value = args_list[3]
+
+        # Cast the value to the correct type
+        if attribute_value.startswith('"') and attribute_value.endswith('"'):
+            attribute_value = attribute_value.strip('"')
+        elif attribute_value.isdigit():
+            attribute_value = int(attribute_value)
+        else:
+            try:
+                attribute_value = float(attribute_value)
+            except ValueError:
+                pass
+
+        # Update the attribute in the instance
+        obj = all_obj[key]
+        setattr(obj, attribute_name, attribute_value)
+        obj.save()  # Save changes to JSON file
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
