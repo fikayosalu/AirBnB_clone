@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """file_storage module"""
 import json
-import models.base_model
 
 
 class FileStorage:
@@ -29,11 +28,6 @@ class FileStorage:
         print(json_dict)
         with open(self.__file_path, "w") as file:
             file.write(json.dumps(json_dict))
-
-    @classmethod
-    def create(cls, **dictionary):
-        dummy = cls(**dictionary)
-        return dummy
 
     def reload(self):
         """Deserializes the JSON file to __objects (only if the JSON)

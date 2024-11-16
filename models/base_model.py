@@ -2,6 +2,7 @@
 """base_model module"""
 import uuid
 from datetime import datetime
+import json
 from models.__init__ import storage
 
 
@@ -51,3 +52,8 @@ class BaseModel:
                       value in attributes.items()}
         class_dict['__class__'] = self.__class__.__name__
         return class_dict
+
+    @classmethod
+    def create(cls, **dictionary):
+        dummy = cls(**dictionary)
+        return dummy
