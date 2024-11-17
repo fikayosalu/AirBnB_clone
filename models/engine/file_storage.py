@@ -47,6 +47,6 @@ class FileStorage:
                     class_name, class_id = key.split('.')
                     cls = eval(class_name)
                     instance = cls(**value)
-                    self.__objects[key] = instance 
+                    self.__objects[key] = instance
         except (FileNotFoundError):
             pass
