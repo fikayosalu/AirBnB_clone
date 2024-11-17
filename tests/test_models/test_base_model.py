@@ -1,6 +1,5 @@
 import unittest
-import json
-import os
+import uuid
 from models.base_model import BaseModel
 from datetime import datetime
 
@@ -8,7 +7,27 @@ class TestBaseModel(unittest.TestCase):
     """Unit test for the BaseModel class"""
 
     def setUp(self):
-        pass
+        self.model = BaseModel()
+
+    def test_instance_creation(self):
+        """Test if an instance of a Basemodel is
+        created correctly.
+        """
+        self.assertIsInstance(self.model, BaseModel)
+        self.assertIsInstance(self.model.id, str)
+        self.assertTrue(uuid.UUID(self.model.id)) # Check if it's a valid uuid
+        self.assertIsInstance(self.model.created_at, datetime)
+        self.assertIsInstance(self.model.updated_at, datetime)
+
+    def test_unique_ids(self):
+        """Test if each instance has a unique id."""
+        BM = BaseModel()
+        self.assertNotEqual(self.model.id, BM.id)
+
+    def test_str_rep(self):
+        """Tests the __str__ method."""
+        expected = f"[BaseModel] ({self.model.id} {self.model.__dict__})"
+        self.assertEqual(str(self.model), expected) # I stopped here
 
     def test_attr(self):
         my_model = BaseModel()
