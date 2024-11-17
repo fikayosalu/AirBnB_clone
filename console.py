@@ -12,6 +12,7 @@ valid_classes = {
     "BaseModel": BaseModel,
 }
 
+
 class HBNBCommand(cmd.Cmd):
     """This is the command class. It inherits cmd class."""
 
@@ -29,19 +30,33 @@ class HBNBCommand(cmd.Cmd):
         """Overrides the behaviour for empty lines by doing nothing."""
         pass
 
+    def val_class_name(self, class_name):
+        """Validate class name."""
+        if class_name not in valid_classes:
+            print("** class doesn't exist **")
+            return False
+        return True
+
+    def parse_args(self, args, expected_count):
+        """Parses arguments and validates count."""
+        args_list = args.split()
+        if len(args_list) < expected_count:
+            return None
+        return args_list
+
     def do_create(self, args):
         """Create an instance of Basemodel, saves it to JSON file
         and print an id.
         Usage: create <ClassName>
         """
-        if not args:
+        args_list = self.parse_args(args, 1)
+        if not args_list:
             print("** class name missing **")
             return
         # Extract the classname
-        class_name = args.split()[0]
+        class_name = args_list[0]
 
-        if class_name not in valid_classes:
-            print("** class doesn't exist **")
+        if not self.val_class_name(class_name):
             return
 
         # Create an instance of the class
@@ -64,8 +79,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args_list[0]
-        if class_name not in valid_classes:
-            print("** class doesn't exist **")
+        if not self.val_class_name(class_name):
             return
 
         # Check if id is missing
@@ -111,6 +125,87 @@ class HBNBCommand(cmd.Cmd):
 
         del all_obj[key]
         models.storage.save()
+
+    def do_all(self, args):
+        """Prints all string representation of all instances
+        based or not on the class name.
+        Usage: all <ClassName> or all
+        """
+        args_list = args.split()
+        all_obj = models.storage.all()
+
+        # Check if no arg was passed
+        if len(args_list) == 0:
+            all_instances = [str(obj) for obj in all_obj.values()]
+            print(all_instances)
+            return
+
+        # class name was provided
+        class_name = args_list[0]
+        if class_name not in valid_classes:
+            print("** class doesn't exist **")
+            return
+
+        # Filter all objects and print
+        filtered_objs = [
+            str(obj) for key, obj in all_obj.items()
+            if key.startswith(class_name)
+        ]
+        print(filtered_objs)
+
+    def do_update(self, args):
+        """Updates an instance based on the class name and id by adding
+        or updating an attribute.
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """
+        args_list = args.split()
+
+        # Check for class name
+        if len(args_list) < 1:
+            print("** class name missing **")
+            return
+        class_name = args_list[0]
+        if not self.val_class_name(class_name):
+            return
+
+        # Check for instance id
+        if len(args_list) < 2:
+            print("** instance id missing **")
+            return
+        instance_id = args_list[1]
+        key = f"{class_name}.{instance_id}"
+        all_obj = models.storage.all()
+        if key not in all_obj:
+            print("** no instance found **")
+            return
+
+        # Check for attribute name
+        if len(args_list) < 3:
+            print("** attribute name missing **")
+            return
+        attribute_name = args_list[2]
+
+        # Check for attribute value
+        if len(args_list) < 4:
+            print("** value missing **")
+            return
+        attribute_value = args_list[3]
+
+        # Cast the value to the correct type
+        if attribute_value.startswith('"') and attribute_value.endswith('"'):
+            attribute_value = attribute_value.strip('"')
+        elif attribute_value.isdigit():
+            attribute_value = int(attribute_value)
+        else:
+            try:
+                attribute_value = float(attribute_value)
+            except ValueError:
+                pass
+
+        # Update the attribute in the instance
+        obj = all_obj[key]
+        setattr(obj, attribute_name, attribute_value)
+        obj.save()  # Save changes to JSON file
 
 
 if __name__ == "__main__":
