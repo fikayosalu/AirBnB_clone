@@ -2,6 +2,12 @@
 """This module is the entry point of the program."""
 
 
+from models.amenity import Amenity
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.review import Review
+from models.user import User
 from models.base_model import BaseModel
 import cmd
 import models
@@ -10,6 +16,12 @@ import models
 # List of valid classes
 valid_classes = {
     "BaseModel": BaseModel,
+    "User": User,
+    "Place": Place,
+    "State": State,
+    "City": City,
+    "Amenity": Amenity,
+    "Review": Review,
 }
 
 
@@ -32,10 +44,12 @@ class HBNBCommand(cmd.Cmd):
 
     def val_class_name(self, class_name):
         """Validate class name."""
-        if class_name not in valid_classes:
-            print("** class doesn't exist **")
-            return False
-        return True
+        for valid_class in valid_classes.keys():
+            if class_name == valid_class:
+                return True
+
+        print("** class doesn't exist **")
+        return False
 
     def parse_args(self, args, expected_count):
         """Parses arguments and validates count."""
@@ -90,12 +104,12 @@ class HBNBCommand(cmd.Cmd):
         key = f"{class_name}.{instance_id}"
 
         # Check if instance exist in storage
-        all_obj = models.storage.all()
-        if key not in all_obj:
+        all_obj = models.storage.all().get(key)
+        if not all_obj:
             print("** no instance found **")
             return
 
-        print(all_obj[key])
+        print(all_obj)
 
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id.
@@ -158,6 +172,7 @@ class HBNBCommand(cmd.Cmd):
         or updating an attribute.
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
+        # Tokenize each arg and save as a list
         args_list = args.split()
 
         # Check for class name
@@ -174,6 +189,8 @@ class HBNBCommand(cmd.Cmd):
             return
         instance_id = args_list[1]
         key = f"{class_name}.{instance_id}"
+
+        # Check all storage and fetch key
         all_obj = models.storage.all()
         if key not in all_obj:
             print("** no instance found **")
@@ -205,7 +222,9 @@ class HBNBCommand(cmd.Cmd):
         # Update the attribute in the instance
         obj = all_obj[key]
         setattr(obj, attribute_name, attribute_value)
-        obj.save()  # Save changes to JSON file
+
+        # Save obj to JSON file
+        obj.save()
 
 
 if __name__ == "__main__":
