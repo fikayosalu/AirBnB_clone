@@ -2,7 +2,8 @@
 """base_model module"""
 import uuid
 from datetime import datetime
-from models.__init__ import storage
+import json
+import models
 
 
 class BaseModel:
@@ -29,7 +30,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """ A string representation instances of the class"""
@@ -38,7 +39,7 @@ class BaseModel:
     def save(self):
         """Updates the public instance attribute with the current time"""
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """Returs a dictionary containing all keys/values of __dict__
@@ -51,3 +52,8 @@ class BaseModel:
                       value in attributes.items()}
         class_dict['__class__'] = self.__class__.__name__
         return class_dict
+
+    @classmethod
+    def create(cls, **dictionary):
+        dummy = cls(**dictionary)
+        return dummy

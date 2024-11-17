@@ -12,6 +12,7 @@ valid_classes = {
     "BaseModel": BaseModel,
 }
 
+
 class HBNBCommand(cmd.Cmd):
     """This is the command class. It inherits cmd class."""
 
@@ -147,7 +148,8 @@ class HBNBCommand(cmd.Cmd):
 
         # Filter all objects and print
         filtered_objs = [
-            str(obj) for key, obj in all_obj.items() if key.startswith(class_name)
+            str(obj) for key, obj in all_obj.items()
+            if key.startswith(class_name)
         ]
         print(filtered_objs)
 
