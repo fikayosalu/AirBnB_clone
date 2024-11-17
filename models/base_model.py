@@ -52,8 +52,3 @@ class BaseModel:
                       value in attributes.items()}
         class_dict['__class__'] = self.__class__.__name__
         return class_dict
-
-    @classmethod
-    def create(cls, **dictionary):
-        dummy = cls(**dictionary)
-        return dummy
