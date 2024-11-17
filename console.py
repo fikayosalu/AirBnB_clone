@@ -156,6 +156,7 @@ class HBNBCommand(cmd.Cmd):
         or updating an attribute.
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
+        # Tokenize each arg and save as a list
         args_list = args.split()
 
         # Check for class name
@@ -203,7 +204,9 @@ class HBNBCommand(cmd.Cmd):
         # Update the attribute in the instance
         obj = all_obj[key]
         setattr(obj, attribute_name, attribute_value)
-        obj.save()  # Save changes to JSON file
+
+        # Save obj to JSON file
+        obj.save()
 
 
 if __name__ == "__main__":
