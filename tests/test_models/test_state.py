@@ -1,16 +1,19 @@
 import unittest
 import json
 import os
-from models.base_model import BaseModel
+from models.state import State
 from datetime import datetime, timedelta
 
 
-class TestBaseModel(unittest.TestCase):
-    """Unit test for the BaseModel class"""
+class TestState(unittest.TestCase):
+    """Unit test for the State class"""
+
+    def setUp(self):
+        pass
 
     def test_save(self):
         """Test the save() method"""
-        model = BaseModel()
+        model = State()
         old_updated_at = model.updated_at
         model.save()
         self.assertNotEqual(old_updated_at, model.updated_at)
@@ -19,40 +22,37 @@ class TestBaseModel(unittest.TestCase):
                                delta=timedelta(seconds=1))
 
     def test_to_dict(self):
-        """Test the to_dict() method"""
-        model = BaseModel()
+        model = State()
         instance_dict = model.to_dict()
         self.assertIn("__class__", instance_dict)
         self.assertIn("created_at", instance_dict)
         self.assertIn("updated_at", instance_dict)
-        self.assertEqual(instance_dict.get("__class__"), "BaseModel")
+        self.assertEqual(instance_dict.get("__class__"), "State")
         self.assertEqual(type(instance_dict.get("created_at")), str)
         self.assertEqual(type(instance_dict.get("updated_at")), str)
 
     def test_str(self):
-        """Test the str method"""
-        model = BaseModel()
-        self.assertEqual(str(model), f"[BaseModel] \
+        model = State()
+        self.assertEqual(str(model), f"[State] \
 ({model.id}) {model.__dict__}")
-        my_model = BaseModel()
+        my_model = State()
         my_model.name = "My First Model"
-        self.assertEqual(str(my_model), f"[BaseModel] \
+        self.assertEqual(str(my_model), f"[State] \
 ({my_model.id}) {my_model.__dict__}")
-        new_model = BaseModel()
+        new_model = State()
         new_model.name = "My new model"
-        self.assertEqual(str(new_model), f"[BaseModel] ({new_model.id}) \
+        self.assertEqual(str(new_model), f"[State] ({new_model.id}) \
 {new_model.__dict__}")
 
     def test_init(self):
-        """Test the init method"""
-        model = BaseModel()
+        model = State()
         model_dict = model.to_dict()
-        new_model = BaseModel(**model_dict)
-        self.assertEqual(type(new_model), BaseModel)
+        new_model = State(**model_dict)
+        self.assertEqual(type(new_model), State)
         self.assertIn("created_at", new_model.__dict__)
         self.assertIn("updated_at", new_model.__dict__)
         new_dict = new_model.to_dict()
-        self.assertEqual(new_dict.get("__class__"), "BaseModel")
+        self.assertEqual(new_dict.get("__class__"), "State")
         self.assertEqual(type(new_dict.get("created_at")), str)
         self.assertEqual(type(new_dict.get("updated_at")), str)
 
