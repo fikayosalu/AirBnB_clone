@@ -31,6 +31,14 @@ class TestReview(unittest.TestCase):
         self.assertEqual(type(instance_dict.get("created_at")), str)
         self.assertEqual(type(instance_dict.get("updated_at")), str)
 
+    def test_class_attr(self):
+        self.assertTrue(hasattr(Review, "place_id"))
+        self.assertTrue(hasattr(Review, "user_id"))
+        self.assertTrue(hasattr(Review, "text"))
+        self.assertEqual(Review.place_id, "")
+        self.assertEqual(Review.user_id, "")
+        self.assertEqual(Review.text, "")
+
     def test_str(self):
         model = Review()
         self.assertEqual(str(model), f"[Review] \

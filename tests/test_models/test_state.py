@@ -31,6 +31,10 @@ class TestState(unittest.TestCase):
         self.assertEqual(type(instance_dict.get("created_at")), str)
         self.assertEqual(type(instance_dict.get("updated_at")), str)
 
+    def test_class_attr(self):
+        self.assertTrue(hasattr(State, "name"))
+        self.assertEqual(State.name, "")
+
     def test_str(self):
         model = State()
         self.assertEqual(str(model), f"[State] \

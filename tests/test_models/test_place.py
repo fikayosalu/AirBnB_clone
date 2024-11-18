@@ -31,6 +31,30 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(type(instance_dict.get("created_at")), str)
         self.assertEqual(type(instance_dict.get("updated_at")), str)
 
+    def test_class_attr(self):
+        self.assertTrue(hasattr(Place, "city_id"))
+        self.assertTrue(hasattr(Place, "user_id"))
+        self.assertTrue(hasattr(Place, "description"))
+        self.assertTrue(hasattr(Place, "name"))
+        self.assertTrue(hasattr(Place, "number_rooms"))
+        self.assertTrue(hasattr(Place, "number_bathrooms"))
+        self.assertTrue(hasattr(Place, "max_guest"))
+        self.assertTrue(hasattr(Place, "price_by_night"))
+        self.assertTrue(hasattr(Place, "latitude"))
+        self.assertTrue(hasattr(Place, "longitude"))
+        self.assertTrue(hasattr(Place, "amenity_ids"))
+        self.assertEqual(Place.city_id, "")
+        self.assertEqual(Place.user_id, "")
+        self.assertEqual(Place.name, "")
+        self.assertEqual(Place.description, "")
+        self.assertEqual(Place.number_rooms, 0)
+        self.assertEqual(Place.number_bathrooms, 0)
+        self.assertEqual(Place.max_guest, 0)
+        self.assertEqual(Place.price_by_night, 0)
+        self.assertEqual(Place.latitude, 0.0)
+        self.assertEqual(Place.longitude, 0.0)
+        self.assertEqual(Place.amenity_ids, [])
+
     def test_str(self):
         model = Place()
         self.assertEqual(str(model), f"[Place] \

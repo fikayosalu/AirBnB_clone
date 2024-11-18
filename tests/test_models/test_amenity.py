@@ -29,6 +29,10 @@ class TestAmenity(unittest.TestCase):
         self.assertEqual(type(instance_dict.get("created_at")), str)
         self.assertEqual(type(instance_dict.get("updated_at")), str)
 
+    def test_class_attr(self):
+        self.assertTrue(hasattr(Amenity, "name"))
+        self.assertEqual(Amenity.name, "")
+
     def test_str(self):
         """Test the str method"""
         model = Amenity()
