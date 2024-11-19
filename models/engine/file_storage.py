@@ -48,6 +48,6 @@ class FileStorage:
                     cls = eval(class_name)
                     instance = cls(**value)
                     if cls is not None:
-                        self.__objects[key] = instance 
+                        self.__objects[key] = instance
         except (FileNotFoundError):
             pass

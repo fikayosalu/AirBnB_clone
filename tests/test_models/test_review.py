@@ -1,15 +1,19 @@
 import unittest
-import uuid
-from models.base_model import BaseModel
+import json
+import os
+from models.review import Review
 from datetime import datetime, timedelta
 
 
-class TestBaseModel(unittest.TestCase):
-    """Unit test for the BaseModel class"""
+class TestReview(unittest.TestCase):
+    """Unit test for the Review class"""
+
+    def setUp(self):
+        pass
 
     def test_save(self):
         """Test the save() method"""
-        model = BaseModel()
+        model = Review()
         old_updated_at = model.updated_at
         model.save()
         self.assertNotEqual(old_updated_at, model.updated_at)
@@ -18,40 +22,45 @@ class TestBaseModel(unittest.TestCase):
                                delta=timedelta(seconds=1))
 
     def test_to_dict(self):
-        """Test the to_dict() method"""
-        model = BaseModel()
+        model = Review()
         instance_dict = model.to_dict()
         self.assertIn("__class__", instance_dict)
         self.assertIn("created_at", instance_dict)
         self.assertIn("updated_at", instance_dict)
-        self.assertEqual(instance_dict.get("__class__"), "BaseModel")
+        self.assertEqual(instance_dict.get("__class__"), "Review")
         self.assertEqual(type(instance_dict.get("created_at")), str)
         self.assertEqual(type(instance_dict.get("updated_at")), str)
 
+    def test_class_attr(self):
+        self.assertTrue(hasattr(Review, "place_id"))
+        self.assertTrue(hasattr(Review, "user_id"))
+        self.assertTrue(hasattr(Review, "text"))
+        self.assertEqual(Review.place_id, "")
+        self.assertEqual(Review.user_id, "")
+        self.assertEqual(Review.text, "")
+
     def test_str(self):
-        """Test the str method"""
-        model = BaseModel()
-        self.assertEqual(str(model), f"[BaseModel] \
+        model = Review()
+        self.assertEqual(str(model), f"[Review] \
 ({model.id}) {model.__dict__}")
-        my_model = BaseModel()
+        my_model = Review()
         my_model.name = "My First Model"
-        self.assertEqual(str(my_model), f"[BaseModel] \
+        self.assertEqual(str(my_model), f"[Review] \
 ({my_model.id}) {my_model.__dict__}")
-        new_model = BaseModel()
+        new_model = Review()
         new_model.name = "My new model"
-        self.assertEqual(str(new_model), f"[BaseModel] ({new_model.id}) \
+        self.assertEqual(str(new_model), f"[Review] ({new_model.id}) \
 {new_model.__dict__}")
 
     def test_init(self):
-        """Test the init method"""
-        model = BaseModel()
+        model = Review()
         model_dict = model.to_dict()
-        new_model = BaseModel(**model_dict)
-        self.assertEqual(type(new_model), BaseModel)
+        new_model = Review(**model_dict)
+        self.assertEqual(type(new_model), Review)
         self.assertIn("created_at", new_model.__dict__)
         self.assertIn("updated_at", new_model.__dict__)
         new_dict = new_model.to_dict()
-        self.assertEqual(new_dict.get("__class__"), "BaseModel")
+        self.assertEqual(new_dict.get("__class__"), "Review")
         self.assertEqual(type(new_dict.get("created_at")), str)
         self.assertEqual(type(new_dict.get("updated_at")), str)
 
