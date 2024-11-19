@@ -130,6 +130,12 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(model_dict['updated_at'],
                          self.model.updated_at.isoformat())
 
+    def test_attr(self):
+        """Test the class attributes of the FileStorage class"""
+        self.assertTrue(hasattr(FileStorage, "_FileStorage__file_path"))
+        self.assertTrue(hasattr(FileStorage, "_FileStorage__objects"))
+        self.assertEqual(FileStorage._FileStorage__file_path, "file.json")
+
 
 if __name__ == "__main__":
     unittest.main()
