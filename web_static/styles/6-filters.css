@@ -62,7 +62,6 @@ cursor: pointer;
     padding-left: 10px;
     background-color: #FAFAFA;
     display: none;
-    
 }
 
 .popover h2{
@@ -76,12 +75,12 @@ ul{
     padding-left: 20px;
 }
 
-.amenities:hover #amenities-pop{
+.amenities:hover .popover{
     display: block;
     cursor: pointer;
 }
 
-.locations:hover #locations-pop{
+.locations:hover .popover{
     display: block;
     cursor: pointer;
 }

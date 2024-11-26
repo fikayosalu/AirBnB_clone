@@ -56,10 +56,33 @@ article h2{
     clear: both;
     display: flex;
     font-size: 14px;
-    padding: 10px 0;
 }
 
 figure{
     margin: 30px;
     margin-top: 0;
+}
+
+.number_bathrooms{
+    background-image: url(../images/AirBnB-bathrooms.png);
+    background-repeat: no-repeat;
+}
+
+.max_guest{
+    background-image: url(../images/AirBnB_guset.png);
+    background-repeat: no-repeat;
+}
+
+.number_rooms{
+    background-image: url(../images/AirBnB-rooms.png);
+    background-repeat: no-repeat;
+}
+
+.info-icon{
+    margin: 0 30px;
+    display: flex;
+}
+
+.info-icon p{
+    align-self:last baseline;
 }
