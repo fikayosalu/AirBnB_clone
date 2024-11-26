@@ -8,6 +8,10 @@
     justify-content: flex-end;
 }
 
+.filters h2{
+    display: none;
+}
+
 button{
     font-size: 18px;
     background-color: #FF5A5F;
